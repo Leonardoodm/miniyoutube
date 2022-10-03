@@ -30,3 +30,7 @@ Route::middleware([
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::resource(name:'videos', controller:'App\Http\Controllers\VideoController');
+
+//Route::resource('videos', '\App\Http\Controllers\VideoController');
