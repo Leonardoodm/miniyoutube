@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
@@ -36,6 +38,22 @@ class VideoController extends Controller
     public function store(Request $request)
     {
         //gurda un nuevo registro apartir de un formulario de nuevo registro
+        //validacion del formulario
+        $validateData = $this->validate($request, [
+            'title' => 'required|min:5',
+            'description' => 'required',
+            'video' => 'mimes:mp4'
+        ]);
+        $video = new Video();
+        $user = Auth::user();
+        $video->user_id = $user->id;
+        $video->title = $request->input(key:'title');
+        $video->description = $request->input(key:'description');
+        $video->save();
+        return redirect()->route(route:'home')->with(array(
+            'message' => 'El video se ha subido correctamente'
+        ));
+
     }
 
     /**
