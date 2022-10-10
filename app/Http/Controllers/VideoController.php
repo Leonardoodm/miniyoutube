@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use File;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class VideoController extends Controller
 {
@@ -37,7 +39,7 @@ class VideoController extends Controller
      */
     public function store(Request $request)
     {
-        //gurda un nuevo registro apartir de un formulario de nuevo registro
+        //guarda un nuevo registro apartir de un formulario de nuevo registro
         //validacion del formulario
         $validateData = $this->validate($request, [
             'title' => 'required|min:5',
@@ -49,6 +51,22 @@ class VideoController extends Controller
         $video->user_id = $user->id;
         $video->title = $request->input(key:'title');
         $video->description = $request->input(key:'description');
+        //subida de la miniatura
+        $image =$request->file(key:'image');
+        if($image){
+            $image_path = time().$image->getClientOriginalName();
+            Storage::disk('images')
+            ->put($image_path, File:: get($image));
+            $video->image = $image_path;
+        }
+        //subida de video
+        $video_file = $request-> file(key:'videos');
+        if ($video) {
+            $video = time().$image->getClientOriginalName();
+            Storage::disk('videos')
+                ->put($video, File::get($video));
+            $video->video = $video_path;
+        }
         $video->save();
         return redirect()->route(route:'home')->with(array(
             'message' => 'El video se ha subido correctamente'
