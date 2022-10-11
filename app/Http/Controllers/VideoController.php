@@ -51,22 +51,21 @@ class VideoController extends Controller
         $video->user_id = $user->id;
         $video->title = $request->input(key:'title');
         $video->description = $request->input(key:'description');
-        //subida de la miniatura
-        $image =$request->file(key:'image');
-        if($image){
-            $image_path = time().$image->getClientOriginalName();
-            Storage::disk('images')
-            ->put($image_path, File:: get($image));
+        //Subida de la miniatura
+        $image = $request->file('image');
+        if ($image) {
+            $image_path = time() . $image->getClientOriginalName();
+            \Storage::disk('images')->put($image_path, \File::get($image));
             $video->image = $image_path;
+        } 
+        //Subida del video
+        $video_file = $request->file('video');
+        if ($video_file) {
+            $video_path = time() . $video_file->getClientOriginalName();
+            \Storage::disk('videos')->put($video_path, \File::get($video_file));
+            $video->video_path = $video_path;
         }
-        //subida de video
-        $video_file = $request-> file(key:'videos');
-        if ($video) {
-            $video = time().$image->getClientOriginalName();
-            Storage::disk('videos')
-                ->put($video, File::get($video));
-            $video->video = $video_path;
-        }
+
         $video->save();
         return redirect()->route(route:'home')->with(array(
             'message' => 'El video se ha subido correctamente'
