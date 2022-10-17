@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use File;
+use App\Models\Vsvideo;
 use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,8 @@ class VideoController extends Controller
     public function index()
     {
         //mostar el formulario de captura
+        $videos = VsVideo :: where ('activo', '=', 1) -> get() ;
+        return view(view:'videos.index')-> with('videos', $videos);
     }
 
     /**
