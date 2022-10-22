@@ -33,8 +33,8 @@ public function cargarDT($consulta)
         foreach ($consulta as $key => $value){
 
             $ruta = "eliminar".$value['id'];
-            //$eliminar = route('delete-video', $value['id']);
-            $eliminar='#';
+            $eliminar = route('delete-video', $value['id']);
+            
             $actualizar =  route('videos.edit', $value['id']);
 
             $acciones = '
@@ -64,7 +64,7 @@ public function cargarDT($consulta)
                       </p>
 </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 
                       <a href="'.$eliminar.'" type="button" class="btn btn-danger">Eliminar</a>
                         </div>
@@ -223,4 +223,21 @@ $videos[$key] = array(
     {
         //Borrado
     }
+
+    public function delete_video($video_id)
+    {
+        $video = Video::find($video_id);
+        if ($video) {
+            $video->active = 0;
+            $video->update();
+            return redirect()->route('videos.index')->with(array(
+                "message" => "El video se ha eliminado correctamente"
+            ));
+        } else {
+            return redirect()->route('videos.index')->with(array(
+                "message" => "El video que trata de eliminar no existe"
+            ));
+        }
+    }
+
 }
