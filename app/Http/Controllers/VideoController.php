@@ -154,6 +154,16 @@ $videos[$key] = array(
     public function show($id)
     {
         //muestra un registro solamente
+        {
+           
+            $user = Auth::user();
+            $video = Video::find($id);
+            if ($user && $video->user_id == $user->id) {
+                return view('videos.mostrar', array('video' => $video));
+            } else {
+                return redirect()->route('home');
+            }
+        }
     }
 
     /**

@@ -41,3 +41,4 @@ Route::get('/delete-video/{video_id}', array(
     'middleware' => 'auth',
     'uses' => 'App\Http\Controllers\VideoController@delete_video'
 ));
+
