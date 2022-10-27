@@ -37,16 +37,17 @@ public function cargarDT($consulta)
             $eliminar = route('delete-video', $value['id']);
             
             $actualizar =  route('videos.edit', $value['id']);
-
+            $detalle =  route('videos.show', $value['id']);
             $acciones = '
                 <div class="btn-acciones">
                     <div class="btn-circle">
-                    <a href="'.$detalle.'" role="button" class="btn btn-primary" title="Reproducir">
-                            <i class="far fa-edit"></i>
-                        <a href="'.$actualizar.'" role="button" class="btn btn-success" title="Actualizar">
+                        <a href="'.$actualizar. '" role="button" class="btn btn-success" title="actualizar">
                             <i class="far fa-edit"></i>
                         </a>
-                         <a href="#'.$ruta.'" role="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#'.$ruta.'">
+                        <a href="' . $detalle . '" role="button" class="btn btn-primary" title="reproducir">
+                            <i class="far fa-play"></i>
+                        </a>
+                         <a href="#'.$actualizar.'" role="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#'.$ruta.'">
                             <i class="far fa-trash-alt"></i>
                         </a>
 
@@ -126,6 +127,7 @@ $videos[$key] = array(
         $video->user_id = $user->id;
         $video->title = $request->input(key:'title');
         $video->description = $request->input(key:'description');
+        $video->active = 1;
         //Subida de la miniatura
         $image = $request->file('image');
         if ($image) {
