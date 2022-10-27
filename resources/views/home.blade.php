@@ -15,6 +15,22 @@
                         </div>
                     @endif
 
+                    @foreach ($videos as $video)
+              
+              
+                    <div class="card" style="width: 18rem;">
+              @if(Storage::disk('images')->has($video->image))
+                <img src="{{ url('/miniatura/'.$video->image) }}" class="card-img-top" alt="..."/>
+                @endif
+                
+  <div class="card-body">
+    <h5 class="card-title">{{$video->title}}</h5>
+    <p class="card-text">{{$video->description}}</p>
+    <a href="{{route('videos.show',$video->id)}}" class="btn btn-primary">Escuchala</a>
+  </div>
+</div>
+                        
+                    @endforeach
                
 
         
