@@ -42,3 +42,13 @@ Route::get('/delete-video/{video_id}', array(
     'uses' => 'App\Http\Controllers\VideoController@delete_video'
 ));
 
+Route::get('/miniatura/{filename}',array(
+    'as' => 'imageVideo',
+    'uses' => 'App\Http\Controllers\VideoController@getImage'
+));
+
+
+  Route::get('/video-file/{filename}', array(
+    'as' => 'fileVideo',
+    'uses' => 'App\Http\Controllers\VideoController@getVideo'
+));

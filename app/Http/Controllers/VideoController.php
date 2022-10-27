@@ -8,6 +8,7 @@ use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class VideoController extends Controller
 {
@@ -40,6 +41,8 @@ public function cargarDT($consulta)
             $acciones = '
                 <div class="btn-acciones">
                     <div class="btn-circle">
+                    <a href="'.$detalle.'" role="button" class="btn btn-primary" title="Reproducir">
+                            <i class="far fa-edit"></i>
                         <a href="'.$actualizar.'" role="button" class="btn btn-success" title="Actualizar">
                             <i class="far fa-edit"></i>
                         </a>
@@ -154,16 +157,9 @@ $videos[$key] = array(
     public function show($id)
     {
         //muestra un registro solamente
-        {
-           
-            $user = Auth::user();
-            $video = Video::find($id);
-            if ($user && $video->user_id == $user->id) {
-                return view('videos.mostrar', array('video' => $video));
-            } else {
-                return redirect()->route('home');
-            }
-        }
+        $video = Vsvideo::find($id);
+        return view('videos.show')->with('video',$video);
+
     }
 
     /**
@@ -249,5 +245,14 @@ $videos[$key] = array(
             ));
         }
     }
+    public function getImage($filename){
+        $file = \Storage::disk('images')->get($filename);
+        return new Response($file, 200);
+     }
+
+     public function getVideo($filename){
+        $file = \Storage::disk('videos')->get($filename);
+        return new Response($file, 200);
+     }
 
 }
