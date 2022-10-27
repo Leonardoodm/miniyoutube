@@ -8,6 +8,7 @@ use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class VideoController extends Controller
 {
@@ -33,13 +34,15 @@ public function cargarDT($consulta)
         foreach ($consulta as $key => $value){
 
             $ruta = "eliminar".$value['id'];
-            //$eliminar = route('delete-video', $value['id']);
-            $eliminar='#';
+            $eliminar = route('delete-video', $value['id']);
+            
             $actualizar =  route('videos.edit', $value['id']);
 
             $acciones = '
                 <div class="btn-acciones">
                     <div class="btn-circle">
+                    <a href="'.$detalle.'" role="button" class="btn btn-primary" title="Reproducir">
+                            <i class="far fa-edit"></i>
                         <a href="'.$actualizar.'" role="button" class="btn btn-success" title="Actualizar">
                             <i class="far fa-edit"></i>
                         </a>
@@ -64,7 +67,7 @@ public function cargarDT($consulta)
                       </p>
 </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
 
                       <a href="'.$eliminar.'" type="button" class="btn btn-danger">Eliminar</a>
                         </div>
@@ -154,6 +157,9 @@ $videos[$key] = array(
     public function show($id)
     {
         //muestra un registro solamente
+        $video = Vsvideo::find($id);
+        return view('videos.show')->with('video',$video);
+
     }
 
     /**
@@ -223,4 +229,30 @@ $videos[$key] = array(
     {
         //Borrado
     }
+
+    public function delete_video($video_id)
+    {
+        $video = Video::find($video_id);
+        if ($video) {
+            $video->active = 0;
+            $video->update();
+            return redirect()->route('videos.index')->with(array(
+                "message" => "El video se ha eliminado correctamente"
+            ));
+        } else {
+            return redirect()->route('videos.index')->with(array(
+                "message" => "El video que trata de eliminar no existe"
+            ));
+        }
+    }
+    public function getImage($filename){
+        $file = \Storage::disk('images')->get($filename);
+        return new Response($file, 200);
+     }
+
+     public function getVideo($filename){
+        $file = \Storage::disk('videos')->get($filename);
+        return new Response($file, 200);
+     }
+
 }
