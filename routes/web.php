@@ -33,7 +33,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource(name:'videos', controller:'\App\Http\Controllers\VideoController');
-
+Route::resource(name: 'comments', controller: '\App\Http\Controllers\CommentController');
 //Route::resource('videos', '\App\Http\Controllers\VideoController');
 
 Route::get('/delete-video/{video_id}', array(
