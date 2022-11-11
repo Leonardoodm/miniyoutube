@@ -18,6 +18,10 @@
                     <p class="card-text">{{$video->description}}</p>
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                     <h5></br>Cometarios</h5>
+                    @foreach($comments as $comment)
+                    <br><strong><p>{{$comment->name}}</strong> subido hace {{$comment->created_at->diffForHumans(null,true)}}
+                         {{$comment->body}} <br></p>
+                    @endforeach
                     @if(Auth::check())
                         <form class="col-md-4" method="post" action="{{ route('comments.store') }}">
                         {!! csrf_field() !!}

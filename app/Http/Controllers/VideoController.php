@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use File;
 use App\Models\Vsvideo;
 use App\Models\Video;
+use App\Models\VsComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -160,8 +161,8 @@ $videos[$key] = array(
     {
         //muestra un registro solamente
         $video = Vsvideo::find($id);
-        return view('videos.show')->with('video',$video);
-
+        $comments = Vscomment::where('video_id','=',$id)->get();
+        return view('videos.show')->with('video',$video)->with('comments',$comments);
     }
 
     /**
